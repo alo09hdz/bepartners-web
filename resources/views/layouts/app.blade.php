@@ -22,13 +22,15 @@
             </div>
         </div>
 
+        {{-- Menú de navegación --}}
         <nav class="mt-2 space-y-1 px-4 text-sm font-medium">
             @php
-                $link = fn($route, $label) => '<a href="'.route($route).'" class="flex items-center rounded-xl px-4 py-2.5 transition '
-                    .(request()->routeIs($route) ? 'bg-brand/10 text-brand' : 'text-slate-600 hover:bg-slate-50 hover:text-brand-dark').'">'.$label.'</a>';
+                $link = fn($pattern, $route, $label) => '<a href="'.route($route).'" class="flex items-center rounded-xl px-4 py-2.5 transition '
+                    .(request()->routeIs($pattern) ? 'bg-brand/10 text-brand' : 'text-slate-600 hover:bg-slate-50 hover:text-brand-dark').'">'.$label.'</a>';
             @endphp
-            {!! $link('dashboard', 'Dashboard') !!}
-            {{-- Aquí iremos agregando: Proyectos, Actividades, Acuerdos, Reportes, Historial, Usuarios --}}
+            {!! $link('dashboard', 'dashboard', 'Dashboard') !!}
+            {!! $link('projects.*', 'projects.index', 'Proyectos') !!}
+            {{-- Próximos: Actividades, Acuerdos, Reportes, Historial, Usuarios --}}
         </nav>
 
         <div class="absolute inset-x-0 bottom-0 border-t border-slate-100 p-4">
@@ -58,6 +60,11 @@
         </header>
 
         <main class="p-6 lg:p-8">
+            @if (session('success'))
+                <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+                    {{ session('success') }}
+                </div>
+            @endif
             @yield('content')
         </main>
     </div>
